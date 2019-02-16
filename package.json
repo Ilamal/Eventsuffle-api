@@ -1,0 +1,19 @@
+{
+  "name": "eventsuffle-api",
+  "version": "1.0.0",
+  "description": "api for futurice technical interview",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ilamal/Eventsuffle-api.git"
+  },
+  "author": "Ilamal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ilamal/Eventsuffle-api/issues"
+  },
+  "homepage": "https://github.com/Ilamal/Eventsuffle-api#readme"
+}
