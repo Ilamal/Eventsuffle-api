@@ -9,9 +9,9 @@ router.post("/api/v1/event", (req, res, next) => {
     // Values to be added
     const name = req.body.name;
     const dates = JSON.stringify({ dates: req.body.dates });
-    const votes = JSON.stringify({"votes": []});
+    const votes = JSON.stringify({ "votes": [] });
     // Do the insert query and return the inserted auto increment id
-    const queryString = "INSERT INTO events (name, dates, votes) VALUES (?, ?, ?)"    
+    const queryString = "INSERT INTO events (name, dates, votes) VALUES (?, ?, ?)"
     connection.query(queryString, [name, dates, votes], (err, results, fields) => {
         if (err) {
             next("Failed to add new event : " + err.stack);
@@ -40,7 +40,7 @@ router.post("/api/v1/event/:id/vote", (req, res, next) => {
         } else {
             //Edit the found event
             const event = row[0];
-            let eventVotes = eventHelper.AddVotes(event, name, dates);                       
+            let eventVotes = eventHelper.AddVotes(event, name, dates);
             // Add the votes to database           
             const queryString = "UPDATE events SET votes = ? WHERE id = ?";
             connection.query(queryString, [eventVotes, id], (err, results, fields) => {

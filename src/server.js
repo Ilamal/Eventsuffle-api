@@ -1,6 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
-import fs, { lstat } from 'fs';
+import fs from 'fs';
 import eventRoute from './routes/event';
 import bodyParser from 'body-parser';
 
