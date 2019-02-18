@@ -16,7 +16,7 @@ router.post("/api/v1/event", (req, res, next) => {
         if (err) {
             next("Failed to add new event : " + err.stack);
         }
-        res.json({ "id": 1 });
+        res.json({ "id": results.insertId });
     });
 });
 
