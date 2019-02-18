@@ -6,7 +6,7 @@ import eventHelper from '../src/helpers/event.helper';
 import { doesNotReject } from 'assert';
 
 chai.use(chaiHttp);
-const host = 'http://localhost:8080';
+const host = 'http://'+process.env.HOST + ':' + process.env.PORT || 'http://localhost:8080';
 const ValidateJson = require('../src/helpers/event.helper').ValidateJson;
 describe('Event', () => {
      describe('helper', () => {
