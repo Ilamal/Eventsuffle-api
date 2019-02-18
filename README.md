@@ -1,6 +1,6 @@
 # Eventsuffle-api
 
-A doodle.com like event planning backend api done for futurice tech interview. Assignment page [here](https://gist.github.com/anttti/2b69aebc63687ebf05ec).
+A doodle.com like event planning backend application done for futurice tech interview. Assignment page [here](https://gist.github.com/anttti/2b69aebc63687ebf05ec).
 
 ## Getting Started
 
@@ -74,7 +74,7 @@ The structure is following:
 ```
 ## Deployment
 
-The app runs on heroku server at [herokuapp](https://polar-bayou-45401.herokuapp.com). See queries and answers below. Uses `clearDB` as the mysql database, also running on heroku. This causes problems with mysql versioning but is reasonable (5.5 vs 5.6+). Heroku version has indecies starting from 2 and incrementing by 10. This is due to clearDB. Localhost instances of mysql most likely will start from 0 or 1 and increment by 1.
+The app runs on heroku server at [herokuapp](https://polar-bayou-45401.herokuapp.com). See queries and answers below. Uses `clearDB` as the mysql database, also running on heroku. This causes problems with mysql versioning but is reasonable (5.5 vs 5.6+). Heroku version has indecies starting from 2 and incrementing by 10. This is due to clearDB. Localhost instances of mysql most likely will start from 0 or 1 and increment by 1. Heroku deployment done via the heroku branch with procfile. Heroku node.js [website](https://devcenter.heroku.com/articles/getting-started-with-nodejs) has more info.
 
 ***
 ### Copied from the original assignment
