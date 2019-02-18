@@ -4,14 +4,13 @@ const router = express.Router();
 
 // Create new event call
 router.post("/api/v1/event", (req, res) => {
-    console.log("Creating a new event");
+    ValidateJson(req.body);
     // Values to be added
     const name = req.body.name;
     const dates = JSON.stringify({ dates: req.body.dates });
     const votes = JSON.stringify({"votes": []});
-
-    const queryString = "INSERT INTO events (name, dates, votes) VALUES (?, ?, ?)"
-
+    // Do the insert query and return the inserted auto increment id
+    const queryString = "INSERT INTO events (name, dates, votes) VALUES (?, ?, ?)"    
     connection.query(queryString, [name, dates, votes], (err, results, fields) => {
         if (err) {
             console.error("Failed to add new event : " + err.stack);
@@ -24,6 +23,8 @@ router.post("/api/v1/event", (req, res) => {
 
 // Add votes to event call
 router.post("/api/v1/event/:id/vote", (req, res) => {
+    ValidateJson(req.body);
+    //Values to be added
     const id = req.params.id;
     const name = req.body.name;
     const dates = req.body.votes;
@@ -37,7 +38,7 @@ router.post("/api/v1/event/:id/vote", (req, res) => {
             return;
         } else if (row.length == 0) {
             res.sendStatus(404);
-            console.log("Not found");
+            console.error("Not found");
             return;
         } else {
             //Edit the found event
@@ -71,14 +72,11 @@ router.post("/api/v1/event/:id/vote", (req, res) => {
             });
         }
     });
-
-
 });
 
 //List all events call
 router.get("/api/v1/event/list", (req, res) => {
-    console.log("Listing all events");
-    //Make the query to database
+    // Find all the events from database and return them under events object
     connection.query("SELECT id, name FROM events", (err, rows, fields) => {
         if (err) {
             //Error with query
@@ -95,8 +93,7 @@ router.get("/api/v1/event/list", (req, res) => {
 
 //Get id call
 router.get("/api/v1/event/:id", (req, res) => {
-    console.log("Returning by id");
-
+    // Find the event with id, parse it because double stringify and send it
     connection.query("SELECT * FROM events WHERE id=?", [req.params.id], (err, rows, fields) => {
         if (err) {
             //Error with query
@@ -118,8 +115,7 @@ router.get("/api/v1/event/:id", (req, res) => {
 
 // Get results call
 router.get("/api/v1/event/:id/results", (req, res) => {
-    console.log("Getting results");
-
+    // Find the event with id and check where all participants have voted
     connection.query("SELECT * FROM events WHERE id=?", [req.params.id], (err, rows, fields) => {
         if (err) {
             //Error with query
@@ -154,5 +150,21 @@ router.get("/api/v1/event/:id/results", (req, res) => {
         }
     });
 });
+
+function ValidateJson(json) {
+    const error = new SyntaxError("Dates must be an array with string dates!");
+    if(!Array.isArray(json.dates)) {
+        throw error
+    } else {
+        for(let i in json.dates) {
+            if(typeof json.dates[i] != "string"){
+                throw error;
+            }
+            if(!Date.parse(json.dates[i])) {
+                throw error;
+            }
+        }
+    }
+}
 
 export default router;

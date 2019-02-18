@@ -18,14 +18,13 @@ app.use(eventRoute);
 
 //Root get call
 app.get('/', (req, res) => {
-    console.log("Get on root");
     res.send("Hello world");
 });
 // Handler for 404 - Resource Not Found
 app.use((req, res, next) => {
     res.sendStatus(404);
 });
-// Handler for 500 - Internal server error
+// Handler for 500 Internal server error and - 400 invalid syntax error
 app.use(function (err, req, res, next) {
     console.error(err.stack)
     if(err instanceof SyntaxError) {
