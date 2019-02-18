@@ -50,7 +50,8 @@ router.post("/api/v1/event/:id/vote", (req, res) => {
                     undefined :
                     !eventVotes.votes.find(o => o.date == dates[i]) ? 
                     eventVotes.votes.push({"date" : dates[i], "people" : [name]}) : 
-                    eventVotes.votes.find(o => o.date == dates[i]).people.push(name)                   
+                    eventVotes.votes.find(o => o.date == dates[i]).people.indexOf(name)==-1 ?
+                    eventVotes.votes.find(o => o.date == dates[i]).people.push(name) : undefined;                    
                 } catch (err) {
                    console.error(err.stack);
                 }
@@ -96,22 +97,60 @@ router.get("/api/v1/event/list", (req, res) => {
 router.get("/api/v1/event/:id", (req, res) => {
     console.log("Returning by id");
 
-    connection.query("SELECT * FROM events WHERE id=?", [req.params.id], (err, row, fields) => {
+    connection.query("SELECT * FROM events WHERE id=?", [req.params.id], (err, rows, fields) => {
         if (err) {
             //Error with query
             res.sendStatus(500);
             console.error("Failed query with error : " + err.stack);
             return;
-        } else if (row.length == 0) {
+        } else if (rows.length == 0) {
             res.sendStatus(404);
             console.log("Not found")
             return;
         } else {
             //Return the event as json
-            const event = row[0];
-            event.dates = JSON.parse(row[0].dates);
-            event.votes = JSON.parse(row[0].votes);
-            res.json(row);
+            rows[0].dates = JSON.parse(rows[0].dates);
+            rows[0].votes = JSON.parse(rows[0].votes);
+            res.json(rows[0]);
+        }
+    });
+});
+
+// Get results call
+router.get("/api/v1/event/:id/results", (req, res) => {
+    console.log("Getting results");
+
+    connection.query("SELECT * FROM events WHERE id=?", [req.params.id], (err, rows, fields) => {
+        if (err) {
+            //Error with query
+            res.sendStatus(500);
+            console.error("Failed query with error : " + err.stack);
+            return;
+        } else if (rows.length == 0) {
+            res.sendStatus(404);
+            console.log("Not found")
+            return;
+        } else {
+            // Return the suitable dates as json
+            const participants = [];
+            const votes = JSON.parse(rows[0].votes).votes;
+            for (let i in votes) {
+                for(let j in votes[i].people) {
+                    let person = votes[i].people[j];
+                    !participants.includes(person) ? participants.push(person) : undefined;
+                }
+            }
+            let suitableDates = [];
+            for (let i in votes) {
+                const people = votes[i].people;
+                if(participants.length == people.length && participants.every((element, index)=> element === people[index] )) {
+                    suitableDates.push({"date": votes[i].date, "people": people});
+                }                
+            }
+            delete rows[0].dates;
+            delete rows[0].votes;
+            rows[0].suitableDates = suitableDates;
+            res.json(rows[0]);
         }
     });
 });

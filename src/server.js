@@ -28,7 +28,11 @@ app.use((req, res, next) => {
 // Handler for 500 - Internal server error
 app.use(function (err, req, res, next) {
     console.error(err.stack)
-    res.status(500).send('Something broke!')
+    if(err instanceof SyntaxError) {
+        res.sendStatus(400);
+    } else {
+        res.status(500).send('Something broke!');
+    }
   })
 //Start listening port localhost
 app.listen(PORT, () => {
