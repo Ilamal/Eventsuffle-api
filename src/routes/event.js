@@ -57,7 +57,7 @@ router.post("/api/v1/event/:id/vote", (req, res, next) => {
 router.get("/api/v1/event/list", (req, res, next) => {
     // Find all the events from database and return them under events object
     connection.query("SELECT id, name FROM events", (err, rows, fields) => {
-        if (!err) {
+        if (err) {
             //Error with query
             next(new Error("Failed query with error : "));
         } else {

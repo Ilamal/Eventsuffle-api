@@ -4,6 +4,17 @@ const eventHelper = {
     ValidateJson: (json) => {
         const error = new SyntaxError("Dates and votes must be an array with string dates!");
         let test;
+        try {
+            JSON.stringify(json)
+        } catch(err) {
+            throw error;
+        }
+        if(!json) {
+           throw error;
+        }
+        if(!json.name){
+           throw error;
+        }
         if (json.dates) {
             test = json.dates;
         } else if (json.votes) {
@@ -14,6 +25,7 @@ const eventHelper = {
         if (!Array.isArray(test)) {
             throw error
         } else {
+            //Check the arrays to be valid string dates
             for (let i in test) {
                 if (typeof test[i] != "string") {
                     throw error;
@@ -32,9 +44,9 @@ const eventHelper = {
                 !eventDates.dates.find(o => o == dates[i]) ?
                     undefined :
                     !eventVotes.votes.find(o => o.date == dates[i]) ?
-                        eventVotes.votes.push({ "date": dates[i], "people": [name] }) :
-                        eventVotes.votes.find(o => o.date == dates[i]).people.indexOf(name) == -1 ?
-                            eventVotes.votes.find(o => o.date == dates[i]).people.push(name) : undefined;
+                    eventVotes.votes.push({ "date": dates[i], "people": [name] }) :
+                    eventVotes.votes.find(o => o.date == dates[i]).people.indexOf(name) == -1 ?
+                    eventVotes.votes.find(o => o.date == dates[i]).people.push(name) : undefined;
             } catch (err) {
                 console.error(err.stack);
             }
