@@ -1,6 +1,6 @@
 # Eventsuffle-api
 
-A doodle.com like event planning backend application done for futurice tech interview. Assignment page [here](https://gist.github.com/anttti/2b69aebc63687ebf05ec).
+A doodle.com like event planning backend application done for Futurice tech interview. Assignment page [here](https://gist.github.com/anttti/2b69aebc63687ebf05ec).
 
 ## Getting Started
 
@@ -308,4 +308,4 @@ the api uses a little akward style of data, with storing json inside the mysql c
 dates : { dates : [] }
 votes : { votes : {date : "2019-03-28" people : ["Ilari"]} }
 ```
-This could be fixed by creating table relations in the database instead of storing json (which also bring problems with mysql versions lower that 5.6)
+This could be fixed by creating table relations in the database instead of storing json (which also brings problems with mysql versions lower that 5.6)
